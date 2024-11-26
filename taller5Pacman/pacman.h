@@ -25,7 +25,7 @@ private:
     QTimer *gameTimer;
     Laberinto *laberinto;
     int direction;
-    const int STEP = 5;
+    const int STEP = 3;
 
 private slots:
     void updateGame();

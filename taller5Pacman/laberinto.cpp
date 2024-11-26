@@ -1,4 +1,5 @@
 #include "laberinto.h"
+//#include "pacman.h"
 #include <QPen>
 #include <QBrush>
 
@@ -38,8 +39,8 @@ void Laberinto::crear() {
         for (int columna = 0; columna < COLUMNAS; columna++) {
             if (disenoLaberinto[fila][columna] == 1) {
                 QGraphicsRectItem *pared = scene->addRect(
-                    columna * CELL_SIZE,
-                    fila * CELL_SIZE,
+                    columna * CELL_SIZE ,
+                    fila * CELL_SIZE ,
                     CELL_SIZE,
                     CELL_SIZE,
                     paredPen,
@@ -52,7 +53,7 @@ void Laberinto::crear() {
 }
 
 bool Laberinto::hayColision(const QRectF &rect) const {
-    // Verificar colisión con cada pared
+    // Verificar colisión con cada pared --NO FUNCIONA--
     for (const auto &pared : paredes) {
         if (rect.intersects(pared->sceneBoundingRect())) {
             return true;
@@ -60,3 +61,5 @@ bool Laberinto::hayColision(const QRectF &rect) const {
     }
     return false;
 }
+
+

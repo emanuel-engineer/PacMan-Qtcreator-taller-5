@@ -24,7 +24,7 @@ Pacman::Pacman(QWidget *parent)
     //timer del juego
     gameTimer = new QTimer(this);
     connect(gameTimer, &QTimer::timeout, this, &Pacman::updateGame);
-    gameTimer->start(16); // ~60 FPS
+    gameTimer->start(40); // ~60 FPS
 
     setupGame();
 }
@@ -32,7 +32,7 @@ Pacman::Pacman(QWidget *parent)
 void Pacman::setupGame()
 {
     //PacMan Sin Sprite
-    pacman = scene->addEllipse(0, 0, 20, 20, QPen(Qt::black), QBrush(Qt::yellow));
+    pacman = scene->addEllipse(0, 0, 17, 17, QPen(Qt::black), QBrush(Qt::yellow));
     pacman->setPos(scene->width()/2, scene->height()/2);
      pacman->setPos(Laberinto::CELL_SIZE * 1, Laberinto::CELL_SIZE * 1);
 }
@@ -64,19 +64,19 @@ void Pacman::updateGame()
     // Mover según la dirección
     switch (direction) {
     case 0: // Derecha
-        if (pos.x() + STEP < scene->width() - 30)
+        if (pos.x() + STEP < scene->width() - STEP+1)
             pos.setX(pos.x() + STEP);
         break;
     case 1: // Abajo
-        if (pos.y() + STEP < scene->height() - 30)
+        if (pos.y() + STEP > scene->height()-STEP+1)//> 0)
             pos.setY(pos.y() + STEP);
         break;
     case 2: // Izquierda
-        if (pos.x() - STEP > 0)
+        if (pos.x() - STEP<scene->width()+STEP-1)
             pos.setX(pos.x() - STEP);
         break;
     case 3: // Arriba
-        if (pos.y() - STEP > 0)
+        if (pos.y() - STEP >scene->height()+STEP-1)//> 0)
             pos.setY(pos.y() - STEP);
         break;
     }
@@ -87,21 +87,29 @@ void Pacman::updateGame()
 
     switch (direction) {
     case 0: // Derecha
-        newPos.setX(newPos.x() + STEP);
+        newPos.setX(newPos.x()-STEP);
+        //while(Laberinto::disenoLaberinto[Laberinto::FILAS][Laberinto::COLUMNAS] == 1)
+        //{newPos.setX(newPos.x()-STEP-4);}
         break;
     case 1: // Abajo
         newPos.setY(newPos.y() + STEP);
+        //while(Laberinto::disenoLaberinto[Laberinto::FILAS][Laberinto::COLUMNAS] == 1)
+        //{newPos.setY(newPos.y()-STEP-4);}
         break;
-    case 2: // Izquierda
-        newPos.setX(newPos.x() - STEP);
+    case 2: // Izquierda NO FUNCIONA
+        newPos.setX(newPos.x() + STEP);
+        //while(Laberinto::disenoLaberinto[Laberinto::FILAS][Laberinto::COLUMNAS] == 1)
+        //{newPos.setX(newPos.x()-STEP-4);}
         break;
     case 3: // Arriba
-        newPos.setY(newPos.y() - STEP);
+       newPos.setY(newPos.y() - STEP);
+        //while(Laberinto::disenoLaberinto[Laberinto::FILAS][Laberinto::COLUMNAS] == 1)
+        //{newPos.setY(newPos.y()-STEP-4);}
         break;
     }
 
     // Verificar colisión usando la clase Laberinto
-    QRectF pacmanRect(newPos, QSizeF(18, 18));
+    QRectF pacmanRect(newPos, QSizeF(10, 10));
     if (!laberinto->hayColision(pacmanRect)) {
         pacman->setPos(newPos);
     }
